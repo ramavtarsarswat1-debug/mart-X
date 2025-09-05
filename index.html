@@ -1,0 +1,238 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MartX Grocery - Fresh Groceries in Udaipur</title>
+<meta name="description" content="MartX Grocery delivers fresh groceries, fruits, vegetables, dairy, and snacks in Udaipur. Order online now!">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    header {
+        background-color: #FF5722;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    header img {
+        height: 50px;
+        width: 50px;
+        margin-right: 15px;
+        border-radius: 10px;
+    }
+    header div h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+    header div p {
+        margin: 0;
+        font-size: 14px;
+    }
+    nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        background-color: #FF7043;
+        padding: 10px 0;
+    }
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 5px 15px;
+        font-weight: bold;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    .product-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .product-card h3 {
+        margin: 10px 0 5px 0;
+    }
+    .product-card p {
+        color: #333;
+        margin: 5px 0;
+        font-weight: bold;
+    }
+    .product-card button {
+        background-color: #FF5722;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 5px;
+        transition: background 0.2s;
+    }
+    .product-card button:hover {
+        background-color: #e64a19;
+    }
+    .cart {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #FF5722;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .cart:hover {
+        background-color: #e64a19;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <img src="https://via.placeholder.com/50x50.png?text=MX" alt="MartX Logo">
+    <div>
+        <h1>MartX Grocery</h1>
+        <p>Fresh Groceries Delivered in Udaipur!</p>
+    </div>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">Fruits & Veggies</a>
+    <a href="#">Dairy & Eggs</a>
+    <a href="#">Snacks & Beverages</a>
+    <a href="#">Staples</a>
+    <a href="#">Personal Care</a>
+</nav>
+
+<div class="container" id="product-container">
+    <!-- Products will be dynamically loaded by JavaScript -->
+</div>
+
+<div class="cart" id="cart" onclick="viewCart()">Cart (0)</div>
+
+<script>
+const products = [
+    {name:"Apple 1kg", price:180, seller:"Sharma Fruits", img:"https://via.placeholder.com/200x150.png?text=Apple+1kg"},
+    {name:"Banana 1kg", price:60, seller:"Sharma Fruits", img:"https://via.placeholder.com/200x150.png?text=Banana+1kg"},
+    {name:"Tomato 1kg", price:40, seller:"City Veggies", img:"https://via.placeholder.com/200x150.png?text=Tomato+1kg"},
+    {name:"Milk 1L", price:60, seller:"Daily Dairy", img:"https://via.placeholder.com/200x150.png?text=Milk+1L"},
+    {name:"Eggs 12pcs", price:80, seller:"Daily Dairy", img:"https://via.placeholder.com/200x150.png?text=Eggs+12pcs"},
+    {name:"Atta 5kg", price:270, seller:"Ravi Kirana Store", img:"https://via.placeholder.com/200x150.png?text=Atta+5kg"},
+    {name:"Rice 5kg", price:400, seller:"Ravi Kirana Store", img:"https://via.placeholder.com/200x150.png?text=Rice+5kg"},
+    {name:"Sugar 1kg", price:45, seller:"Ravi Kirana Store", img:"https://via.placeholder.com/200x150.png?text=Sugar+1kg"},
+    {name:"Tea 250g", price:120, seller:"SnackWorld", img:"https://via.placeholder.com/200x150.png?text=Tea+250g"},
+    {name:"Biscuits Pack", price:50, seller:"SnackWorld", img:"https://via.placeholder.com/200x150.png?text=Biscuits+Pack"},
+    {name:"Soap 1pc", price:30, seller:"Daily Needs Store", img:"https://via.placeholder.com/200x150.png?text=Soap+1pc"},
+    {name:"Shampoo 200ml", price:150, seller:"Daily Needs Store", img:"https://via.placeholder.com/200x150.png?text=Shampoo+200ml"},
+    {name:"Oil 1L", price:200, seller:"Ravi Kirana Store", img:"https://via.placeholder.com/200x150.png?text=Oil+1L"},
+    {name:"Bread 1pc", price:35, seller:"Daily Needs Store", img:"https://via.placeholder.com/200x150.png?text=Bread+1pc"},
+    {name:"Carrot 1kg", price:50, seller:"City Veggies", img:"https://via.placeholder.com/200x150.png?text=Carrot+1kg"},
+    {name:"Onion 1kg", price:45, seller:"City Veggies", img:"https://via.placeholder.com/200x150.png?text=Onion+1kg"},
+    {name:"Paneer 200g", price:90, seller:"Daily Dairy", img:"https://via.placeholder.com/200x150.png?text=Paneer+200g"},
+    {name:"Cereal 500g", price:180, seller:"Ravi Kirana Store", img:"https://via.placeholder.com/200x150.png?text=Cereal+500g"},
+    {name:"Juice 1L", price:100, seller:"SnackWorld", img:"https://via.placeholder.com/200x150.png?text=Juice+1L"},
+    {name:"Toothpaste 100g", price:80, seller:"Daily Needs Store", img:"https://via.placeholder.com/200x150.png?text=Toothpaste+100g"}
+];
+
+let cartItems = [];
+
+const container = document.getElementById('product-container');
+
+products.forEach((product, index) => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+        <img src="${product.img}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>₹${product.price}</p>
+        <p><strong>Seller:</strong> ${product.seller}</p>
+        <button onclick="addToCart(${index})">Add to Cart</button>
+    `;
+    container.appendChild(card);
+});
+
+function addToCart(index) {
+    const product = products[index];
+    cartItems.push(product);
+    document.getElementById('cart').innerText = `Cart (${cartItems.length})`;
+    alert(`${product.name} from ${product.seller} added to cart`);
+}
+
+function viewCart() {
+    if(cartItems.length === 0){
+        alert('Your cart is empty!');
+        return;
+    }
+    let message = 'Your Cart:\n\n';
+    let total = 0;
+    cartItems.forEach(item => {
+        message += `${item.name} - ₹${item.price} (Seller: ${item.seller})\n`;
+        total += item.price;
+    });
+    message += `\nTotal: ₹${total}`;
+    alert(message);
+}
+</script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
